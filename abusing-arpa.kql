@@ -1,0 +1,7 @@
+// Abusing .arpa: The TLD That Isn’t Supposed to Host Anything
+// Source: https://www.infoblox.com/blog/threat-intelligence/abusing-arpa-the-tld-that-isnt-supposed-to-host-anything/
+DeviceNetworkEvents
+| where Timestamp > ago(1d)
+| where ActionType == "ConnectionSuccess"
+| extend fqdn = replace_string(RemoteUrl, "https://", "")
+| where fqdn matches regex @"^[a-z]{10}\.[0-9a-f\.]+ip6\.arpa$"
